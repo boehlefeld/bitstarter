@@ -33,7 +33,7 @@ var URL_DEFAULT ="www.google.de";
 var assertFileExists = function(infile) {
     var instr = infile.toString();
     if(!fs.existsSync(instr)) {
-        console.log("%s does not exist. Exiting.", instr);
+        //console.log("%s does not exist. Exiting.", instr);
         process.exit(1); // http://nodejs.org/api/process.html#process_process_exit_code
     }
     return instr;
@@ -42,10 +42,10 @@ var assertFileExists = function(infile) {
 var getFileSync = function(url, checks){
     rest.get(url).on('complete', function(result) {
         if (result instanceof Error) {
-          console.log("ERROR restler")
+          //console.log("ERROR restler")
           this.retry(5000); // try again after 5 sec
         } else {
-          console.log ( __dirname + "/downloaded.html");
+          //console.log ( __dirname + "/downloaded.html");
           fs.writeFile(__dirname + "/downloaded.html", result, function(err) {
               check("downloaded.html", checks);
           });
@@ -69,7 +69,6 @@ var loadChecks = function(checksfile) {
 };
 
 var checkHtmlFile = function(htmlfile, checksfile) {
-    console.log (htmlfile);
     $ = cheerioHtmlFile(htmlfile);
     var checks = loadChecks(checksfile).sort();
     var out = {};
@@ -95,10 +94,8 @@ if(require.main == module) {
         .parse(process.argv);
 
     if (program.url) {
-      console.log(program.url);    
       getFileSync(String(program.url), program.checks);
     } else if (program.file) {
-      console.log(program.file);
       check(program.file, program.checks)
     }
 
